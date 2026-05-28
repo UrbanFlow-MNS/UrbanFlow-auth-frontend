@@ -1,0 +1,37 @@
+{
+  "common": {
+    "show_password": "Afficher le mot de passe",
+    "hide_password": "Masquer le mot de passe",
+    "loading": "Chargement…"
+  },
+  "login": {
+    "title": "Connexion",
+    "subtitle": "Bon retour sur la plateforme.",
+    "email_label": "Adresse e-mail",
+    "email_placeholder": "vous@exemple.com",
+    "password_label": "Mot de passe",
+    "forgot_password": "Mot de passe oublié ?",
+    "submit": "Se connecter",
+    "submitting": "Connexion…",
+    "no_account": "Pas encore de compte ?",
+    "create_account": "Créer un compte"
+  },
+  "register": {
+    "title": "Créer un compte",
+    "subtitle": "Rejoignez la plateforme UrbanFlow.",
+    "firstname_label": "Prénom",
+    "lastname_label": "Nom",
+    "email_label": "Adresse e-mail",
+    "email_placeholder": "vous@exemple.com",
+    "password_label": "Mot de passe",
+    "submit": "Créer mon compte",
+    "submitting": "Création…",
+    "already_account": "Déjà un compte ?",
+    "sign_in": "Se connecter"
+  },
+  "errors": {
+    "invalid_credentials": "E-mail ou mot de passe incorrect.",
+    "network": "Une erreur réseau est survenue. Réessayez.",
+    "required": "Ce champ est obligatoire."
+  }
+}

@@ -1,13 +1,7 @@
+import LoginPage from '@/pages/LoginPage'
+
 function App() {
-  return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="text-center space-y-4">
-        <div className="w-12 h-12 rounded-xl bg-primary mx-auto" />
-        <h1 className="text-2xl font-semibold text-foreground">UrbanFlow</h1>
-        <p className="text-muted-foreground text-sm">Design system ready</p>
-      </div>
-    </div>
-  )
+  return <LoginPage />
 }
 
 export default App
