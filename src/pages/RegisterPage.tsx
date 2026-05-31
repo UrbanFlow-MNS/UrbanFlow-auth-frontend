@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import { type AppContext } from '@/hooks/useAppContext'
 import logo from '@/assets/logo.png'
 
 function LanguageSwitcher() {
@@ -41,23 +40,29 @@ function LanguageSwitcher() {
   )
 }
 
-interface LoginPageProps {
-  appContext: AppContext
-  onNavigateToRegister: () => void
-  onNavigateToForgotPassword: () => void
+interface RegisterPageProps {
+  onNavigateToLogin: () => void
 }
 
-export default function LoginPage({ appContext, onNavigateToRegister, onNavigateToForgotPassword }: LoginPageProps) {
+export default function RegisterPage({ onNavigateToLogin }: RegisterPageProps) {
   const { t } = useTranslation()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [form, setForm] = useState({
+    firstname: '',
+    lastname: '',
+    email: '',
+    password: '',
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
-    // TODO: connect to auth service via gateway
+    // TODO: connect to user service via gateway
     await new Promise((r) => setTimeout(r, 1500))
     setIsLoading(false)
   }
@@ -87,27 +92,62 @@ export default function LoginPage({ appContext, onNavigateToRegister, onNavigate
           <div className="bg-white rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.06),0_1px_4px_rgba(0,0,0,0.04)] px-8 py-8">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-foreground tracking-tight">
-                {t('login.title')}
+                {t('register.title')}
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
-                {t('login.subtitle')}
+                {t('register.subtitle')}
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
 
+              {/* First name + Last name */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="firstname" className="text-sm font-medium text-foreground">
+                    {t('register.firstname_label')}
+                  </Label>
+                  <Input
+                    id="firstname"
+                    name="firstname"
+                    type="text"
+                    autoComplete="given-name"
+                    value={form.firstname}
+                    onChange={handleChange}
+                    required
+                    className="h-11 rounded-xl border-border bg-[hsl(0_0%_98%)] focus-visible:ring-primary/30"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="lastname" className="text-sm font-medium text-foreground">
+                    {t('register.lastname_label')}
+                  </Label>
+                  <Input
+                    id="lastname"
+                    name="lastname"
+                    type="text"
+                    autoComplete="family-name"
+                    value={form.lastname}
+                    onChange={handleChange}
+                    required
+                    className="h-11 rounded-xl border-border bg-[hsl(0_0%_98%)] focus-visible:ring-primary/30"
+                  />
+                </div>
+              </div>
+
               {/* Email */}
               <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-sm font-medium text-foreground">
-                  {t('login.email_label')}
+                  {t('register.email_label')}
                 </Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
-                  placeholder={t('login.email_placeholder')}
+                  placeholder={t('register.email_placeholder')}
                   autoComplete="email"
-                  value={email}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                  value={form.email}
+                  onChange={handleChange}
                   required
                   className="h-11 rounded-xl border-border bg-[hsl(0_0%_98%)] placeholder:text-muted-foreground/60 focus-visible:ring-primary/30"
                 />
@@ -115,26 +155,18 @@ export default function LoginPage({ appContext, onNavigateToRegister, onNavigate
 
               {/* Password */}
               <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password" className="text-sm font-medium text-foreground">
-                    {t('login.password_label')}
-                  </Label>
-                  <button
-                    type="button"
-                    onClick={onNavigateToForgotPassword}
-                    className="text-xs text-primary hover:text-primary/80 transition-colors font-medium"
-                  >
-                    {t('login.forgot_password')}
-                  </button>
-                </div>
+                <Label htmlFor="password" className="text-sm font-medium text-foreground">
+                  {t('register.password_label')}
+                </Label>
                 <div className="relative">
                   <Input
                     id="password"
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                    autoComplete="new-password"
+                    value={form.password}
+                    onChange={handleChange}
                     required
                     className="h-11 rounded-xl border-border bg-[hsl(0_0%_98%)] pr-11 placeholder:text-muted-foreground/60 focus-visible:ring-primary/30"
                   />
@@ -161,26 +193,24 @@ export default function LoginPage({ appContext, onNavigateToRegister, onNavigate
                 disabled={isLoading}
               >
                 {isLoading
-                  ? <><Loader2 size={16} className="animate-spin" />{t('login.submitting')}</>
-                  : t('login.submit')
+                  ? <><Loader2 size={16} className="animate-spin" />{t('register.submitting')}</>
+                  : t('register.submit')
                 }
               </Button>
 
             </form>
           </div>
 
-          {/* Register link — user app only */}
-          {appContext === 'user' && (
-            <p className="text-center text-sm text-muted-foreground mt-6">
-              {t('login.no_account')}{' '}
-              <button
-                onClick={onNavigateToRegister}
-                className="text-primary hover:text-primary/80 font-medium transition-colors"
-              >
-                {t('login.create_account')}
-              </button>
-            </p>
-          )}
+          {/* Login link */}
+          <p className="text-center text-sm text-muted-foreground mt-6">
+            {t('register.already_account')}{' '}
+            <button
+              onClick={onNavigateToLogin}
+              className="text-primary hover:text-primary/80 font-medium transition-colors"
+            >
+              {t('register.sign_in')}
+            </button>
+          </p>
 
         </div>
       </div>

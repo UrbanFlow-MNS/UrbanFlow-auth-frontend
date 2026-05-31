@@ -29,6 +29,21 @@
     "already_account": "Déjà un compte ?",
     "sign_in": "Se connecter"
   },
+  "forgot_password": {
+    "title": "Mot de passe oublié",
+    "subtitle": "Saisissez votre e-mail, nous vous enverrons un lien de réinitialisation.",
+    "email_label": "Adresse e-mail",
+    "email_placeholder": "vous@exemple.com",
+    "submit": "Envoyer le lien",
+    "submitting": "Envoi…",
+    "success_title": "E-mail envoyé !",
+    "success_subtitle": "Vérifiez votre boîte mail et suivez les instructions.",
+    "back_to_login": "Retour à la connexion"
+  },
+  "not_found": {
+    "title": "Page introuvable",
+    "subtitle": "Vérifiez l'URL ou contactez votre administrateur."
+  },
   "errors": {
     "invalid_credentials": "E-mail ou mot de passe incorrect.",
     "network": "Une erreur réseau est survenue. Réessayez.",

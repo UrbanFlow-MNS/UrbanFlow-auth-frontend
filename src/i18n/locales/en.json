@@ -29,6 +29,21 @@
     "already_account": "Already have an account?",
     "sign_in": "Sign in"
   },
+  "forgot_password": {
+    "title": "Forgot password",
+    "subtitle": "Enter your email and we'll send you a reset link.",
+    "email_label": "Email address",
+    "email_placeholder": "you@example.com",
+    "submit": "Send reset link",
+    "submitting": "Sending…",
+    "success_title": "Email sent!",
+    "success_subtitle": "Check your inbox and follow the instructions.",
+    "back_to_login": "Back to sign in"
+  },
+  "not_found": {
+    "title": "Page not found",
+    "subtitle": "Check the URL or contact your administrator."
+  },
   "errors": {
     "invalid_credentials": "Invalid email or password.",
     "network": "A network error occurred. Please try again.",
