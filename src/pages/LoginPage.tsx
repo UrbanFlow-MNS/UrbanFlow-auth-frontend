@@ -51,15 +51,37 @@ export default function LoginPage({ appContext, onNavigateToRegister, onNavigate
   const { t } = useTranslation()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
-    // TODO: connect to auth service via gateway
-    await new Promise((r) => setTimeout(r, 1500))
-    setIsLoading(false)
+    setError(null)
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signIn`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (!res.ok) {
+        setError(t('errors.invalid_credentials'))
+        return
+      }
+
+      const data = await res.json()
+      // TODO: stocker le JWT
+      console.log('Signed in:', data)
+      // TODO: rediriger vers l'app d'origine
+    } catch {
+      setError(t('errors.network'))
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -148,6 +170,13 @@ export default function LoginPage({ appContext, onNavigateToRegister, onNavigate
                   </button>
                 </div>
               </div>
+
+              {/* Error message */}
+              {error && (
+                <p className="text-sm text-destructive bg-destructive/8 rounded-xl px-3 py-2">
+                  {error}
+                </p>
+              )}
 
               {/* Submit */}
               <Button

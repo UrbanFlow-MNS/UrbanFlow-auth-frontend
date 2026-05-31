@@ -48,6 +48,7 @@ export default function RegisterPage({ onNavigateToLogin }: RegisterPageProps) {
   const { t } = useTranslation()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState({
     firstname: '',
     lastname: '',
@@ -62,9 +63,34 @@ export default function RegisterPage({ onNavigateToLogin }: RegisterPageProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
-    // TODO: connect to user service via gateway
-    await new Promise((r) => setTimeout(r, 1500))
-    setIsLoading(false)
+    setError(null)
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signUp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          firstName: form.firstname,
+          lastName: form.lastname,
+          email: form.email,
+          password: form.password,
+          role: 'CLASSIC_USER',
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        setError(data?.message ?? t('errors.register_failed'))
+        return
+      }
+
+      onNavigateToLogin()
+    } catch {
+      setError(t('errors.network'))
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -180,6 +206,13 @@ export default function RegisterPage({ onNavigateToLogin }: RegisterPageProps) {
                   </button>
                 </div>
               </div>
+
+              {/* Error message */}
+              {error && (
+                <p className="text-sm text-destructive bg-destructive/8 rounded-xl px-3 py-2">
+                  {error}
+                </p>
+              )}
 
               {/* Submit */}
               <Button

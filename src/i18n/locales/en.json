@@ -46,6 +46,7 @@
   },
   "errors": {
     "invalid_credentials": "Invalid email or password.",
+    "register_failed": "Could not create account. This email may already be in use.",
     "network": "A network error occurred. Please try again.",
     "required": "This field is required."
   }
