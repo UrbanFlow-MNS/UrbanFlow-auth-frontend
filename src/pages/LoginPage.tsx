@@ -74,9 +74,18 @@ export default function LoginPage({ appContext, onNavigateToRegister, onNavigate
       }
 
       const data = await res.json()
-      // TODO: stocker le JWT
-      console.log('Signed in:', data)
-      // TODO: rediriger vers l'app d'origine
+      const params = new URLSearchParams(window.location.search)
+      const redirect = params.get('redirect')
+
+      if (redirect) {
+        const fragment = new URLSearchParams({
+          token: data.accessToken,
+          refresh: data.refreshToken,
+        }).toString()
+        window.location.href = `${decodeURIComponent(redirect)}#${fragment}`
+        return
+      }
+      window.location.href = '/'
     } catch {
       setError(t('errors.network'))
     } finally {
